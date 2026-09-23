@@ -1,0 +1,446 @@
+/* ==========================================================================
+   Homepage — "Glass" theme (inspired by the upstream README screenshot)
+   Frosted slate cards over a darkened background image.
+   Previous theme saved as custom.css.obsidian.bak
+   ========================================================================== */
+
+/* Pin Tailwind v4's cascade-layer order. custom.css can load before the app
+   stylesheet, and the `@layer utilities` block below would otherwise make
+   utilities the *first* (weakest) layer and break all spacing. */
+@layer properties, theme, base, components, utilities;
+
+/* Extra veil so text stays readable over the bright parts of the image */
+#background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgb(15 23 42 / 0.35) 0%, rgb(15 23 42 / 0.15) 40%, rgb(15 23 42 / 0.55) 100%);
+}
+
+/* Glass surfaces: header widgets, service cards, bookmarks */
+.service-card,
+li.bookmark > a {
+  background-color: rgb(30 41 59 / 0.45) !important;
+  border: 1px solid rgb(255 255 255 / 0.06);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.25);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.service-card:hover,
+li.bookmark > a:hover {
+  background-color: rgb(51 65 85 / 0.55) !important;
+  border-color: rgb(251 146 60 / 0.45); /* orange, picks up the image */
+}
+
+/* Stat blocks inside service cards (PENDING / WANTED etc.) */
+.service-block {
+  background-color: rgb(15 23 42 / 0.35) !important;
+  border-radius: 6px;
+}
+
+.service-block > div:last-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* Group headings */
+.service-group-name,
+.bookmark-group-name {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.5);
+}
+
+/* Resource bars in orange to match the background */
+.resource-usage > div {
+  background-color: rgb(251 146 60 / 0.8) !important;
+}
+
+/* ---------- Header: grid of glass cards ---------- */
+
+/* Drop the single big panel boxed mode draws around everything */
+#information-widgets {
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+#widgets-wrap {
+  display: grid !important;
+  /* System needs room for CPU + memory + uptime; the other two split the rest */
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+#information-widgets-right {
+  display: contents !important;
+}
+
+/* Row 1: clock left, weather right */
+#widgets-wrap .information-widget-datetime {
+  order: 1;
+  grid-column: span 2;
+  align-self: center;
+}
+
+#widgets-wrap .information-widget-datetime > div {
+  justify-content: flex-start;
+}
+
+#widgets-wrap .information-widget-datetime span {
+  font-size: 1.75rem;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 8px rgb(0 0 0 / 0.5);
+}
+
+#widgets-wrap .information-widget-openmeteo {
+  order: 2;
+  justify-self: end;
+  align-self: center;
+  text-shadow: 0 1px 4px rgb(0 0 0 / 0.5);
+}
+
+/* Row 2: resource cards (System / Storage / Network) */
+#widgets-wrap > .widget-container {
+  order: 3;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  max-width: none;
+  margin: 0 !important;
+  padding: 0.7rem 1rem 0.8rem;
+  background-color: rgb(30 41 59 / 0.45);
+  border: 1px solid rgb(255 255 255 / 0.06);
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.25);
+  backdrop-filter: blur(12px);
+}
+
+/* Card label moved to the top-left */
+#widgets-wrap > .widget-container > div:last-child {
+  order: -1;
+  margin: 0 0 0.45rem !important;
+  padding: 0;
+  text-align: left;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+#widgets-wrap > .widget-container > div:first-child {
+  align-self: stretch;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+#widgets-wrap .information-widget-resource {
+  flex: 1 1 0;
+  min-width: 0;
+  margin-right: 0 !important;
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+#widgets-wrap .information-widget-resource > div {
+  flex: 1;
+  min-width: 0 !important;
+}
+
+/* Row 3: full-width search */
+#widgets-wrap .information-widget-search {
+  order: 4;
+  grid-column: 1 / -1;
+}
+
+#widgets-wrap .information-widget-search > div {
+  height: 2.6rem;
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+  #widgets-wrap {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #widgets-wrap .information-widget-datetime {
+    grid-column: auto;
+  }
+
+  #widgets-wrap .information-widget-openmeteo {
+    justify-self: start;
+  }
+}
+
+/* ---------- Services: one flat grid, no category groups ---------- */
+
+#services {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: stretch;
+  padding: 0 0.25rem; /* line up with the header cards */
+}
+
+@media (min-width: 768px) {
+  #services {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  #services {
+    /* 4 columns: lines up with the bookmark columns below */
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Card order across groups (homepage.weight only sorts within a group):
+   widget cards first so each row has cards of the same height */
+#services li.service                       { order: 10; }
+
+/* Network gear (services.yaml): always first, as a compact row of small cards */
+#services li.service:is([data-name="Fiber Router"], [data-name="BE3600"],
+                        [data-name="OPNSense"], [data-name="AdGuard"]) {
+  order: 0;
+}
+
+#services li.service:is([data-name="Fiber Router"], [data-name="BE3600"],
+                        [data-name="OPNSense"], [data-name="AdGuard"]) .service-card {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+#services li.service:is([data-name="Fiber Router"], [data-name="BE3600"],
+                        [data-name="OPNSense"], [data-name="AdGuard"]) .service-name {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.45rem;
+  padding-bottom: 0.45rem;
+  font-size: 0.85rem;
+}
+
+#services li.service:is([data-name="Fiber Router"], [data-name="BE3600"],
+                        [data-name="OPNSense"], [data-name="AdGuard"]) .service-description {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.7rem;
+  padding-right: 0.25rem;
+}
+
+#services li.service:is([data-name="Fiber Router"], [data-name="BE3600"],
+                        [data-name="OPNSense"], [data-name="AdGuard"]) .service-icon {
+  opacity: 1;
+}
+
+#services li.service:is([data-name="Fiber Router"], [data-name="BE3600"],
+                        [data-name="OPNSense"], [data-name="AdGuard"]) .service-icon > * {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  /* mdi icons are CSS masks, so the background is the glyph colour */
+  background: rgb(203 213 225) !important;
+}
+#services li.service[data-name="Plex"]     { order: 1; }
+#services li.service[data-name="Tautulli"] { order: 2; }
+#services li.service[data-name="StashApp"] { order: 3; }
+#services li.service[data-name="Traefik"]  { order: 4; }
+#services li.service[data-name="Forgejo"]  { order: 5; }
+#services li.service[data-name="ComfyUI"]  { order: 6; }
+
+/* Wide screens: widget cards are two rows tall; the two cards without
+   widgets stack as slim wide cards beside them instead of stretching */
+@media (min-width: 1280px) {
+  #services {
+    grid-auto-flow: row dense;
+  }
+
+  #services li.service[data-name="Plex"],
+  #services li.service[data-name="Tautulli"],
+  #services li.service[data-name="StashApp"],
+  #services li.service[data-name="Traefik"],
+  #services li.service[data-name="Forgejo"],
+  #services li.service[data-name="ComfyUI"] {
+    grid-row: span 2;
+  }
+
+  #services li.service[data-name="Hollama"],
+  #services li.service[data-name="SmartGallery"] {
+    grid-column: 3 / span 2;
+  }
+
+  /* Keep the stacked pair about as tall as one widget card */
+  #services li.service[data-name="Hollama"] .service-card,
+  #services li.service[data-name="SmartGallery"] .service-card {
+    padding-top: 0.1rem !important;
+    padding-bottom: 0.1rem !important;
+  }
+
+  #services li.service[data-name="Hollama"] .service-name,
+  #services li.service[data-name="SmartGallery"] .service-name {
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+  }
+}
+
+/* Unwrap the group containers so every card joins the same grid.
+   Lives in Tailwind's `utilities` layer: the group panel carries `block!`
+   (a layered !important), which unlayered rules can't override. */
+@layer utilities {
+  #services .services-group,
+  #services .services-group > div,
+  #services ul.services-list {
+    display: contents !important;
+  }
+}
+
+#services .services-group > button {
+  display: none !important;
+}
+
+#services li.service > div {
+  height: 100%;
+  margin-bottom: 0;
+}
+
+/* Card internals, reference-style */
+.service-card {
+  padding: 0.35rem !important;
+  border-radius: 8px !important;
+}
+
+.service-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.service-description {
+  opacity: 0.8;
+}
+
+/* Status pill (RUNNING / HEALTHY) — small and tucked in the corner */
+.service-tags .docker-status,
+.service-tags .ping-status,
+.service-tags .site-monitor-status {
+  padding: 0.1rem 0.4rem !important;
+  margin: 0.35rem 0.35rem 0 0;
+  border-radius: 4px !important;
+  background-color: rgb(15 23 42 / 0.45);
+}
+
+.service-tags .docker-status > div,
+.service-tags .ping-status > div,
+.service-tags .site-monitor-status > div {
+  font-size: 0.55rem !important;
+  letter-spacing: 0.06em;
+}
+
+/* Bookmarks: a bit of breathing room below the services */
+#services + div,
+#bookmarks {
+  margin-top: 1.5rem;
+}
+
+/* ---------- Bookmarks: icon tiles (bookmarksStyle: icons) with a name label ---------- */
+
+.bookmark-list {
+  grid-template-columns: repeat(auto-fill, minmax(5.25rem, 1fr)) !important;
+}
+
+/* min-width: 0 lets long names ellipsize instead of widening the tile */
+li.bookmark {
+  min-width: 0;
+}
+
+li.bookmark > a {
+  min-width: 0;
+  overflow: hidden;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100% !important;
+  height: 4.75rem !important;
+  padding: 0.5rem 0.35rem;
+}
+
+/* Name under the logo, from the tile's title attribute */
+li.bookmark > a::after {
+  content: attr(title);
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.66rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+/* Dark-only logos need lifting on the dark theme */
+li.bookmark[data-name="r/LocalLLaMA"] img {
+  filter: invert(1);
+}
+
+/* Search box */
+.information-widget-search input {
+  background-color: rgb(30 41 59 / 0.45) !important;
+  border: 1px solid rgb(255 255 255 / 0.08) !important;
+  border-radius: 8px;
+}
+
+.information-widget-search input:focus {
+  border-color: rgb(251 146 60 / 0.5) !important;
+  outline: none;
+}
+
+#footer {
+  opacity: 0.4;
+}
+
+/* Centre the search-provider button inside the taller input */
+.information-widget-search div.relative.text-left {
+  position: static;
+}
+
+.information-widget-search button[class*="absolute"] {
+  top: 0.3rem;
+  bottom: 0.3rem !important;
+  right: 0.3rem !important;
+  display: flex;
+  align-items: center;
+  padding: 0 0.9rem;
+  border-radius: 6px;
+}
+
+/* Shortened stat labels (label text is built in, not configurable):
+   hide the original text and draw the short one in its place */
+#services li.service[data-name="Plex"] .service-block:nth-child(1) > div:last-child,
+#services li.service[data-name="Forgejo"] .service-block > div:last-child {
+  font-size: 0 !important;
+}
+
+#services li.service[data-name="Plex"] .service-block:nth-child(1) > div:last-child::after,
+#services li.service[data-name="Forgejo"] .service-block > div:last-child::after {
+  font-size: 0.65rem;
+}
+
+#services li.service[data-name="Plex"] .service-block:nth-child(1) > div:last-child::after { content: "Streams"; }
+#services li.service[data-name="Forgejo"] .service-block:nth-child(1) > div:last-child::after { content: "Notif"; }
+#services li.service[data-name="Forgejo"] .service-block:nth-child(2) > div:last-child::after { content: "PRs"; text-transform: none; }
+#services li.service[data-name="Forgejo"] .service-block:nth-child(3) > div:last-child::after { content: "Repo"; }

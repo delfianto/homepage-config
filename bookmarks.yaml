@@ -1,0 +1,68 @@
+---
+- Hobbies:
+  - Battlestations:
+    - name: r/Battlestations
+      icon: reddit.svg
+      href: https://reddit.com/r/battlestations
+  - Watercooling:
+    - name: r/Watercooling
+      icon: reddit.svg
+      href: https://reddit.com/r/watercooling
+  - Manga:
+    - name: r/Manga
+      icon: reddit.svg
+      href: https://reddit.com/r/manga
+  - MangaDex:
+    - name: MangaDex
+      icon: manga-dex.svg
+      href: https://mangadex.org
+- Linux:
+  - Linux:
+    - name: r/Linux
+      icon: tux.svg
+      href: https://reddit.com/r/linux
+  - LinuxGaming:
+    - name: r/LinuxGaming
+      icon: steam.svg
+      href: https://reddit.com/r/linux_gaming
+  - GamingOnLinux:
+    - name: Gaming on Linux
+      icon: /icons/bookmarks/gamingonlinux.png
+      href: https://gamingonlinux.com
+  - Phoronix:
+    - name: Phoronix
+      icon: /icons/bookmarks/phoronix.png
+      href: https://phoronix.com
+  - OMGUbuntu:
+    - name: OMG Ubuntu
+      icon: /icons/bookmarks/omgubuntu.png
+      href: https://omgubuntu.co.uk
+  - ItsFoss:
+    - name: It's FOSS
+      icon: /icons/bookmarks/itsfoss.png
+      href: https://itsfoss.com
+- AI:
+  - ClaudeJB:
+    - name: r/ClaudeAIJailbreak
+      icon: sh-claude.svg
+      href: https://reddit.com/r/ClaudeAIJailbreak
+  - LocalLLaMA:
+    - name: r/LocalLLaMA
+      icon: ollama.svg
+      href: https://reddit.com/r/LocalLLaMA
+  - OpenWebUI:
+    - name: r/OpenWebUI
+      icon: open-webui-light.svg
+      href: https://reddit.com/r/OpenWebUI
+  - SillyTavern:
+    - name: r/SillyTavernAI
+      icon: sillytavern.png
+      href: https://reddit.com/r/SillyTavernAI
+  - StableDiffusion:
+    - name: r/StableDiffusion
+      icon: sh-automatic1111-light.svg
+      href: https://reddit.com/r/StableDiffusion
+  - MidJourney:
+    - name: r/Midjourney
+      icon: midjourney-light.png
+      href: https://reddit.com/r/midjourney

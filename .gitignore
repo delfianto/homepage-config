@@ -1,0 +1,6 @@
+# Runtime output
+logs/
+
+# Images (background artwork, third-party logos) are kept out of the repo;
+# config references them under /icons/ — restore them separately.
+icons/

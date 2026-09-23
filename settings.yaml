@@ -1,0 +1,18 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/settings/
+
+title: Homepage
+theme: dark
+color: slate
+headerStyle: boxed
+hideVersion: true
+
+background:
+  image: /icons/background.jpg
+  blur: sm
+  saturate: 90
+  brightness: 45
+
+cardBlur: md
+bookmarksStyle: icons
